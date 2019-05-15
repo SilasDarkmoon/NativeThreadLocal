@@ -1,0 +1,19 @@
+{
+
+    "name": "cn.capstones.n.threadlocal",
+
+    "displayName": "Capstone Native ThreadLocal",
+
+    "version": "1.0.0",
+
+    "unity": "2018.3",
+
+    "description": "Capstone Native ThreadLocal",
+
+    "keywords": [
+        "unity"
+    ],
+
+    "category": "Unity"
+
+}
