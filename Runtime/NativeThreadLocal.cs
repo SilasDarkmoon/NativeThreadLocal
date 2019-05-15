@@ -162,5 +162,30 @@ namespace Capstones.UnityEngineEx.Native
         public static T GetContainer<T>() where T : class { return null; }
         public static ulong GetThreadID() { return 0; }
 #endif
+
+        private class NativeThreadLocalWrapper : ThreadLocalObj.INativeThreadLocal
+        {
+            public bool Ready { get { return NativeThreadLocal.Ready; } }
+
+            public T GetContainer<T>() where T : class
+            {
+                return NativeThreadLocal.GetContainer<T>();
+            }
+
+            public ulong GetThreadID()
+            {
+                return NativeThreadLocal.GetThreadID();
+            }
+
+            public void SetContainer(object obj)
+            {
+                NativeThreadLocal.SetContainer(obj);
+            }
+        }
+        [UnityEngine.RuntimeInitializeOnLoadMethod]
+        private static void OnUnityStart()
+        {
+            ThreadLocalObj.NativeThreadLocalWrapper = new NativeThreadLocalWrapper();
+        }
     }
 }
