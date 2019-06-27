@@ -182,7 +182,7 @@ namespace Capstones.UnityEngineEx.Native
                 NativeThreadLocal.SetContainer(obj);
             }
         }
-        [UnityEngine.RuntimeInitializeOnLoadMethod]
+        [UnityEngine.RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnUnityStart()
         {
             ThreadLocalObj.NativeThreadLocalWrapper = new NativeThreadLocalWrapper();
