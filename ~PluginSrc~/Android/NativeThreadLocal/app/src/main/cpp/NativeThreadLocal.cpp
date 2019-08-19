@@ -69,6 +69,6 @@ void* GetThreadLocalContainer()
 void* GetThreadID()
 {
     auto id = std::this_thread::get_id();
-    return *(void**)&id;
+    return (void*)*(pthread_t*)&id;
 }
 }
