@@ -6,8 +6,7 @@
 //  Copyright © 2018年 Silas. All rights reserved.
 //
 
-#include <vector>
-#include <thread>
+#include <pthread.h>
 
 typedef void (*FuncDisposeObj)(void* obj);
 struct ThrealLocalContainer
@@ -54,21 +53,55 @@ private:
     void* innerobj;
 };
 
-static thread_local ThrealLocalContainer container;
+static void ThreadLocalDispose(void* rawcontainer)
+{
+    if (rawcontainer)
+    {
+        ThrealLocalContainer* pcontainer = (ThrealLocalContainer*)rawcontainer;
+        delete pcontainer;
+    }
+}
+struct ContainerKeyInitializer
+{
+public:
+    pthread_key_t key;
+    ContainerKeyInitializer()
+    {
+        pthread_key_create(&key, ThreadLocalDispose);
+    }
+};
+static ContainerKeyInitializer ContainerKey;
+static pthread_key_t GetContainerKey()
+{
+    return ContainerKey.key;
+}
 
 extern "C"
 {
 void RegThreadLocalContainer(void* obj, FuncDisposeObj func_dispose)
 {
-    container.SetContainer(obj, func_dispose);
+    void* rawold = pthread_getspecific(GetContainerKey());
+    if (!rawold)
+    {
+        rawold = new ThrealLocalContainer();
+        pthread_setspecific(GetContainerKey(), rawold);
+    }
+    ThrealLocalContainer* pcontainer = (ThrealLocalContainer*)rawold;
+    pcontainer->SetContainer(obj, func_dispose);
 }
 void* GetThreadLocalContainer()
 {
-    return container.GetContainer();
+    void* rawold = pthread_getspecific(GetContainerKey());
+    if (rawold)
+    {
+        ThrealLocalContainer* pcontainer = (ThrealLocalContainer*)rawold;
+        return pcontainer->GetContainer();
+    }
+    return 0;
 }
 void* GetThreadID()
 {
-    auto id = std::this_thread::get_id();
-    return (void*)*(pthread_t*)&id;
+    auto id = pthread_self();
+    return (void*)id;
 }
 }
