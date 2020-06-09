@@ -12,7 +12,7 @@ namespace Capstones.UnityEngineEx.Native
         {
             get
             {
-#if UNITY_IOS && !UNITY_EDITOR
+#if UNITY_IOS && !UNITY_EDITOR || ENABLE_IL2CPP
                 return true;
 #elif UNITY_ANDROID && !UNITY_EDITOR
                 if (!NativeImported._Linked)
