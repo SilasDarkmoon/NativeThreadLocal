@@ -12,11 +12,11 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
-      '': Any
+      : Any
     second:
       enabled: 0
       settings:
-        Exclude Android: 1
+        Exclude Android: 0
         Exclude Editor: 1
         Exclude Linux: 1
         Exclude Linux64: 1
@@ -28,7 +28,7 @@ PluginImporter:
         Exclude Win64: 1
         Exclude iOS: 1
   - first:
-      '': Editor
+      : Editor
     second:
       enabled: 0
       settings:
@@ -37,9 +37,9 @@ PluginImporter:
   - first:
       Android: Android
     second:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: ARMv7
+        CPU: ARM64
   - first:
       Any: 
     second:
@@ -50,7 +50,9 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+        CPU: AnyCPU
         DefaultValueInitialized: true
+        OS: AnyOS
   - first:
       Facebook: Win
     second:
